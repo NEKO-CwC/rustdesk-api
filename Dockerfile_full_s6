@@ -1,4 +1,5 @@
-FROM rustdesk/rustdesk-server-s6:latest AS server
+ARG RUSTDESK_SERVER_IMAGE=rustdesk/rustdesk-server-s6:latest
+FROM ${RUSTDESK_SERVER_IMAGE} AS server
 
 FROM alpine
 

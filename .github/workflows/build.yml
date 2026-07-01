@@ -27,6 +27,10 @@ on:
         description: 'Web Client API Repository'
         required: true
         default: 'https://github.com/lejianwen/rustdesk-api-web'
+      RUSTDESK_SERVER_IMAGE:
+        description: 'Base rustdesk-server-s6 image used by Dockerfile_full_s6'
+        required: false
+        default: 'rustdesk/rustdesk-server-s6:latest'
   push:
     tags:
       - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
@@ -35,6 +39,7 @@ on:
 env:
   LATEST_TAG: latest
   WEBCLIENT_SOURCE_LOCATION: ${{ github.event.inputs.WEBCLIENT_SOURCE_LOCATION || 'https://github.com/lejianwen/rustdesk-api-web' }}
+  RUSTDESK_SERVER_IMAGE: ${{ github.event.inputs.RUSTDESK_SERVER_IMAGE || 'rustdesk/rustdesk-server-s6:latest' }}
   BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE || github.actor }}
   DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor }}
   GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor }}
@@ -314,6 +319,7 @@ jobs:
           provenance: false
           build-args: |
             BUILDARCH=${{ matrix.job.platform }}
+            RUSTDESK_SERVER_IMAGE=${{ env.RUSTDESK_SERVER_IMAGE }}
           tags: |
             ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -339,12 +345,13 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: "."
-          file: ./Dockerfile
+          file: ./Dockerfile_full_s6
           platforms: ${{ matrix.job.docker_platform }}
           push: true
           provenance: false
           build-args: |
             BUILDARCH=${{ matrix.job.platform }}
+            RUSTDESK_SERVER_IMAGE=${{ env.RUSTDESK_SERVER_IMAGE }}
           tags: |
             ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:full-s6-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
