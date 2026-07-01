@@ -69,9 +69,9 @@ jobs:
           go-version: '1.23'  # 选择 Go 版本
 
       - name: Set up npm
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: build rustdesk-api-web
         working-directory: rustdesk-api-web
@@ -130,6 +130,7 @@ jobs:
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.${{matrix.job.file_ext}}
 
       - name: Upload to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -192,6 +193,7 @@ jobs:
             debian-build/*.deb
 
       - name: Upload to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: test
