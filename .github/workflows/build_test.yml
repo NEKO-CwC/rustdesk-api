@@ -27,10 +27,15 @@ on:
         description: 'Web Client API Repository'
         required: true
         default: 'https://github.com/lejianwen/rustdesk-api-web'
+      RUSTDESK_SERVER_IMAGE:
+        description: 'Base rustdesk-server-s6 image used by Dockerfile_full_s6'
+        required: false
+        default: 'rustdesk/rustdesk-server-s6:latest'
 
 env:
   LATEST_TAG: latest
   WEBCLIENT_SOURCE_LOCATION: ${{ github.event.inputs.WEBCLIENT_SOURCE_LOCATION || 'https://github.com/lejianwen/rustdesk-api-web' }}
+  RUSTDESK_SERVER_IMAGE: ${{ github.event.inputs.RUSTDESK_SERVER_IMAGE || 'rustdesk/rustdesk-server-s6:latest' }}
   BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE || github.actor }}
   DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor }}
   GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor }}
