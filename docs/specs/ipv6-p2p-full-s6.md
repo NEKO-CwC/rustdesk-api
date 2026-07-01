@@ -102,6 +102,7 @@ Run the `rustdesk-api` Build workflow manually with:
 
 ```text
 RUSTDESK_SERVER_IMAGE=ghcr.io/neko-cwc/rustdesk-server-s6:ipv6-candidate-forwarding
+GHCR_IMAGE_NAMESPACE=neko-cwc
 SKIP_DOCKER_HUB=true
 SKIP_GHCR=false
 ```
@@ -109,7 +110,7 @@ SKIP_GHCR=false
 Expected output image:
 
 ```text
-ghcr.io/NEKO-CwC/rustdesk-api:full-s6
+ghcr.io/neko-cwc/rustdesk-api:full-s6
 ```
 
 If building locally:
