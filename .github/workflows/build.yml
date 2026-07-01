@@ -277,6 +277,13 @@ jobs:
             echo "TAG=latest" >> $GITHUB_ENV  # Default to 'latest' if not a tag
           fi
 
+      - name: Normalize Docker image namespaces
+        shell: bash
+        run: |
+          echo "BASE_IMAGE_NAMESPACE=${BASE_IMAGE_NAMESPACE,,}" >> "$GITHUB_ENV"
+          echo "DOCKERHUB_IMAGE_NAMESPACE=${DOCKERHUB_IMAGE_NAMESPACE,,}" >> "$GITHUB_ENV"
+          echo "GHCR_IMAGE_NAMESPACE=${GHCR_IMAGE_NAMESPACE,,}" >> "$GITHUB_ENV"
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
@@ -372,6 +379,13 @@ jobs:
           else
             echo "TAG=latest" >> $GITHUB_ENV  # Default to 'latest' if not a tag
           fi
+
+      - name: Normalize Docker image namespaces
+        shell: bash
+        run: |
+          echo "BASE_IMAGE_NAMESPACE=${BASE_IMAGE_NAMESPACE,,}" >> "$GITHUB_ENV"
+          echo "DOCKERHUB_IMAGE_NAMESPACE=${DOCKERHUB_IMAGE_NAMESPACE,,}" >> "$GITHUB_ENV"
+          echo "GHCR_IMAGE_NAMESPACE=${GHCR_IMAGE_NAMESPACE,,}" >> "$GITHUB_ENV"
 
       - name: Log in to Docker Hub
         if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only log in if Docker Hub push is enabled
